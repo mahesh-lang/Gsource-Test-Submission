@@ -1,0 +1,70 @@
+#include <iostream>     
+#include <string>       //to use string data type.
+#include <vector>       //this will tell the compiler to compile a file called vector along with this code.
+#include <stdlib.h>     
+#include <fstream>      //to perform all file operations.
+
+using namespace std;
+
+struct Triangle{                  //This will define the structure of the triangle.
+    int a,b,c;
+};
+
+enum colors{                    //class enum to assign values to different colors
+    Red = 0,   
+    Green,                      //by default green will take value 1
+    Blue                        //and blue will take value 2
+};
+
+class ColoredTriangles {        
+
+vector<Triangle> vTriangles;     //declaring vector to store the values of type Triangles
+int a_color[9];                   //an integer array to store the colors of the respective nodes.
+
+public:
+ void ReadNodes();               //funtion declarations, to read nodes of a given graph
+ void ReadTriangle();            //and to store the number of rectangles ina given graph.
+
+};
+
+void ColoredTriangles::ReadNodes(){                //function definition of ReadNodes function
+    ifstream file;
+    file.open("./color.txt");                      // opening a file named 'color.txt'
+    string node;
+    int nodeValue = 0;
+    while( file >> node ){                        //this will decide the color of each node of the graph by reading color.txt file          
+        cout << "Node:" <<nodeValue << " Color:"<< node<<endl;
+        a_color[nodeValue++] = (colors)atoi(node.c_str());
+    }
+}
+
+void ColoredTriangles::ReadTriangle(){            //function definition of ReadTriangles function
+    ifstream file;
+    file.open("./triangles.txt");                 //opening a file named 'triangles.txt'
+    string triangle;
+    int nodeValue = 0;
+    Triangle obj;
+    while( file >> triangle ){                            //this will decide triangles in a graph by reading triangles.txt file 
+        nodeValue++;
+        if(nodeValue == 1){                            
+            obj.a = atoi(triangle.c_str());              
+        } else if(nodeValue == 2){
+            obj.b = atoi(triangle.c_str());
+        } else if(nodeValue == 3){
+            obj.c = atoi(triangle.c_str());
+            nodeValue = 0;
+            cout <<obj.a<<" " <<obj.b << " " <<obj.c<<endl;
+            vTriangles.push_back(obj);                       //pushing all the triangles onto a vector. 
+        }
+
+    }
+
+}
+
+int main(){                          //entry point of the code
+                      
+ColoredTriangles obj;                //creating object of ColoredTriangles class
+    obj.ReadNodes();
+    obj.ReadTriangle();
+return 0;
+}
